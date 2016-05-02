@@ -8,3 +8,5 @@ cp CREDITS "$RELEASEDIR"
 cp EvaFuel.version "$RELEASEDIR"
 cp ./EvaFuel/bin/Release/EvaFuel.dll "$RELEASEDIR/Plugins/"
 cp ./EvaFuel-KISCompat/bin/Release/EvaFuel-KISCompat.dll "$RELEASEDIR/Plugins/"
+cd ../../
+zip -r -9 "Monodevelop Projects/Releases/EvaFuel-$(date --universal +%F-%T).zip" "EvaFuel"
