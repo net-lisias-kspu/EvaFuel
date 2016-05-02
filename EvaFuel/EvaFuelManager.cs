@@ -20,9 +20,6 @@ namespace EvaFuel {
 		public void onEvaStart(GameEvents.FromToAction<Part, Part> data) {
 			double ShipMonoProp = data.from.RequestResource("MonoPropellant", EVATankFuelMax);
 
-			//debug
-			print("EvaFuel, part count: " + data.from.vessel.Parts.Count.ToString());
-
 			if (ShipMonoProp == EVATankFuelMax) {
 				data.to.RequestResource("EVA Propellant", EVATankFuelMax - ShipMonoProp);
 				ScreenMessages.PostScreenMessage ("Filled EVA tank with " + Math.Round(ShipMonoProp, 2).ToString() + " units of MonoPropellant.", ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
