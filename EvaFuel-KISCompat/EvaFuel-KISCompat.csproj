@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{343FD820-217C-4FE3-9A81-3A03B5DB2CBA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EvaFuelKISCompat</RootNamespace>
+    <RootNamespace>EvaFuel-KISCompat</RootNamespace>
     <AssemblyName>EvaFuel-KISCompat</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
