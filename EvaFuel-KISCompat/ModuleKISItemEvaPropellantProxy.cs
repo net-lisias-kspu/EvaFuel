@@ -13,7 +13,7 @@ namespace EvaFuel {
 		int ScreenMessageWarningLife = 10;
 
 		public override void OnItemUse(KIS_Item item, KIS_Item.UseFrom useFrom) {
-			print("KISCompat OnItemUse called!");
+			//print("[KISCompat] OnItemUse called!");
 			if (useFrom != KIS_Item.UseFrom.KeyUp && item.inventory.invType == ModuleKISInventory.InventoryType.Pod) {
 				//Logger.logInfo("Refuel {0} from pod's monopropellant tank", item.availablePart.name);
 				// ... here goes your logic...

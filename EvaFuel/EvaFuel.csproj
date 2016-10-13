@@ -3,13 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{468DD8C1-40EF-470A-9426-5F45395CD01B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EvaFuel</RootNamespace>
     <AssemblyName>EvaFuel</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,16 +29,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\KSP 1.1.2 Assemblies\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPUtil">
-      <HintPath>..\..\KSP 1.1.2 Assemblies\KSPUtil.dll</HintPath>
+      <HintPath>..\..\KSP 1.2 Assemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\KSP 1.1.2 Assemblies\UnityEngine.dll</HintPath>
+      <HintPath>..\..\KSP 1.2 Assemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\KSP 1.1.2 Assemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\KSP 1.2 Assemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
