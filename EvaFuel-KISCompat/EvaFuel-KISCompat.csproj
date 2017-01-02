@@ -40,6 +40,9 @@
     <Reference Include="KIS">
       <HintPath>..\..\Mod Assemblies\KIS.dll</HintPath>
     </Reference>
+    <Reference Include="KSPDev_Utils.0.19.0">
+      <HintPath>..\..\Mod Assemblies\KSPDev_Utils.0.19.0.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
