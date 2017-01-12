@@ -1,11 +1,11 @@
 {
     "NAME": "EvaFuel", 
     "URL": "https://raw.githubusercontent.com/AliceTheGorgon/EvaFuel/master/EvaFuel.version", 
-    "DOWNLOAD": "http://forum.kerbalspaceprogram.com/index.php?/topic/138474-111-105-evafuel-no-more-infinite-eva-fuel/",
+    "DOWNLOAD": "http://forum.kerbalspaceprogram.com/index.php?/topic/138474-122-evafuel-no-more-infinite-eva-fuel/",
     "VERSION": {
         "MAJOR": 1, 
-        "MINOR": 2, 
-        "PATCH": 3,
+        "MINOR": 3, 
+        "PATCH": 0,
         "BUILD": 0
     }
     "KSP_VERSION": {

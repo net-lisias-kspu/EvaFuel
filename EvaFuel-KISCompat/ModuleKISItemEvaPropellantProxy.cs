@@ -33,6 +33,7 @@ namespace EvaFuel
         {
             string shipProp = this.settings.ShipPropellantName;
             string evaProp = this.settings.EvaPropellantName;
+			double conversionFactor = this.settings.FuelConversionFactor;
 
             if (useFrom != KIS_Item.UseFrom.KeyUp && item.inventory.invType == ModuleKISInventory.InventoryType.Pod)
             {
@@ -41,20 +42,19 @@ namespace EvaFuel
 				fuelLeft = GetCanisterFuelResource(item).amount;
 				fuelMax = GetCanisterFuelResource(item).maxAmount;
 
-				double fuelRequest = item.inventory.part.RequestResource(shipProp, fuelMax - fuelLeft);
+				double takenFuel = item.inventory.part.RequestResource(shipProp, (fuelMax - fuelLeft) / conversionFactor);
+				double fuelRequest = takenFuel * conversionFactor;
 				item.SetResource(evaProp, fuelLeft + fuelRequest);
 
 				if (fuelRequest < fuelMax - fuelLeft)
                 {
-					ScreenMessaging.ShowPriorityScreenMessage("Warning! Only " + Math.Round(fuelRequest, 2).ToString() + " units of " + shipProp + " were left to fill the tank!");
-				}
-                else
+					ScreenMessaging.ShowPriorityScreenMessage("Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + " were left to fill the tank!");
+				} else
                 {
-					ScreenMessaging.ShowPriorityScreenMessage("Fuel tank refueled with " + Math.Round(fuelRequest, 2).ToString() + " units of " + shipProp + ".");
+					ScreenMessaging.ShowPriorityScreenMessage("Fuel tank refueled with " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + ".");
 				}
 				UISoundPlayer.instance.Play(refuelSndPath);
-			}
-            else
+			} else
             {
 				base.OnItemUse(item, useFrom);
 			}
