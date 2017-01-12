@@ -41,7 +41,7 @@
       <HintPath>..\..\Mod Assemblies\KIS.dll</HintPath>
     </Reference>
     <Reference Include="KSPDev_Utils.0.19.0">
-      <HintPath>..\..\Mod Assemblies\KSPDev_Utils.0.19.0.dll</HintPath>
+      <HintPath>..\..\Mod Assemblies\KSPDev_Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -49,4 +49,10 @@
     <Compile Include="ModuleKISItemEvaPropellantProxy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\EvaFuel\EvaFuel.csproj">
+      <Project>{468DD8C1-40EF-470A-9426-5F45395CD01B}</Project>
+      <Name>EvaFuel</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
