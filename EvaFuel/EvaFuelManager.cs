@@ -36,7 +36,7 @@ namespace EvaFuel
             string evaProp = this.settings.EvaPropellantName;
             double evaFuelMax = this.settings.EvaTankFuelMax;
             int messageLife = this.settings.ScreenMessageLife;
-            int waringLife = this.settings.ScreenMessageWarningLife;
+			int warningLife = this.settings.ScreenMessageWarningLife;
 
             double fuelRequest = data.from.RequestResource(shipProp, evaFuelMax);
 
@@ -55,20 +55,20 @@ namespace EvaFuel
 						if (data.from.vessel.Parts.Count == 1) //only one part on ship
                         {
 							data.to.RequestResource(evaProp, evaFuelMax - 1);//give one unit of eva propellant
-							ScreenMessages.PostScreenMessage("The Kerbal manages to scrounge together 1 unit of " + evaProp + ".", waringLife, ScreenMessageStyle.UPPER_CENTER);
+							ScreenMessages.PostScreenMessage("The Kerbal manages to scrounge together 1 unit of " + evaProp + ".", warningLife, ScreenMessageStyle.UPPER_CENTER);
 						}
 					}
                     else //This has electricity, and thus isn't a rescue contract ship.
                     {
 						data.from.RequestResource(shipElec, -1);
 						data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
-						ScreenMessages.PostScreenMessage("Warning! No " + shipProp + " available for EVA!", waringLife, ScreenMessageStyle.UPPER_CENTER);
+						ScreenMessages.PostScreenMessage("Warning! No " + shipProp + " available for EVA!", warningLife, ScreenMessageStyle.UPPER_CENTER);
 					}
 				}
                 else
                 {
 					data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
-					ScreenMessages.PostScreenMessage("Warning! Only " + Math.Round(fuelRequest, 2).ToString() + " units of " + shipProp + " available for EVA!", waringLife, ScreenMessageStyle.UPPER_CENTER);
+					ScreenMessages.PostScreenMessage("Warning! Only " + Math.Round(fuelRequest, 2).ToString() + " units of " + shipProp + " available for EVA!", warningLife, ScreenMessageStyle.UPPER_CENTER);
 				}
 			}
 		}
