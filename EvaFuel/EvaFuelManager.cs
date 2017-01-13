@@ -37,13 +37,12 @@ namespace EvaFuel
             double evaFuelMax = this.settings.EvaTankFuelMax;
 			double conversionFactor = this.settings.FuelConversionFactor; //conversionFactor for changing ration of ship fuel to Eva Fuel. Take special care to check multiplication or division
             int messageLife = this.settings.ScreenMessageLife;
-			int warningLife = this.settings.ScreenMessageWarningLife;
 
 
 			double takenFuel = data.from.RequestResource(shipProp, evaFuelMax / conversionFactor);
 			double fuelRequest = takenFuel * conversionFactor;
 
-			if (Math.Abs(fuelRequest - evaFuelMax) < 0.001) //Floats and doubles don't like exaqct numbers. :/ Need to test for similarity rather than equality.
+			if (fuelRequest + 0.001 > evaFuelMax) //Floats and doubles don't like exact numbers. :/ Need to test for similarity rather than equality.
             {
 				data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
 				ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + ".", messageLife, ScreenMessageStyle.UPPER_CENTER);
@@ -57,18 +56,18 @@ namespace EvaFuel
 						if (data.from.vessel.Parts.Count == 1) //only one part on ship
                         {
 							data.to.RequestResource(evaProp, evaFuelMax - 1);//give one unit of eva propellant
-							ScreenMessages.PostScreenMessage("The Kerbal manages to scrounge together 1 unit of " + evaProp + ".", warningLife, ScreenMessageStyle.UPPER_CENTER);
+							PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "No fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + evaProp + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
 						}
-					} else //This has electricity, and thus isn't a rescue contract ship.
+					} else //This has electricity, and thus isn't a rescue contract ship. Except when it is. :/ TODO: Find out why that one rescue ship had electricity, and find out how to work around that.
                     {
 						data.from.RequestResource(shipElec, -1);
 						data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
-						ScreenMessages.PostScreenMessage("Warning! No " + shipProp + " available for EVA!", warningLife, ScreenMessageStyle.UPPER_CENTER);
+						PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + evaProp + "!", "OK", false, HighLogic.UISkin);
 					}
 				} else
                 {
 					data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
-					ScreenMessages.PostScreenMessage("Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + " available for EVA!", warningLife, ScreenMessageStyle.UPPER_CENTER);
+					PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + evaProp + "!", "OK", false, HighLogic.UISkin);
 				}
 			}
 		}
