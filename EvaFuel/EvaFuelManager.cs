@@ -67,13 +67,10 @@ namespace EvaFuel
             double fuelRequest = takenFuel * conversionFactor;
 
             bool rescueShip = false;
-            if (fuelRequest == 0)
-            { //Only check for rescue vessel status if there's no EVA fuel in the current ship.
+            if (fuelRequest == 0) { //Only check for rescue vessel status if there's no EVA fuel in the current ship.
                 var crewList = data.to.vessel.GetVesselCrew();
-                if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
-                {
-                    if (Contracts.ContractSystem.Instance != null)
-                    {
+                if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER) {
+                    if (Contracts.ContractSystem.Instance != null) {
                         var contracts = Contracts.ContractSystem.Instance.Contracts;
                         for (int currentCrew = 0; currentCrew < crewList.Count; currentCrew++)
                         {
