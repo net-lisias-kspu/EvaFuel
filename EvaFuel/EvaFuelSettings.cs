@@ -11,6 +11,8 @@
         public int ScreenMessageLife;
         public int ScreenMessageWarningLife;
 
+        public bool fillFromPod; 
+
         public EvaFuelSettings()
         {
             this.EvaTankFuelMax = 5;
@@ -23,6 +25,7 @@
             this.ScreenMessageWarningLife = 10;
 
 			this.FuelConversionFactor = 1;
+            this.fillFromPod = true;
         }
 
         public void Load(ConfigNode node)
@@ -34,6 +37,7 @@
             node.TryGetValue("ShipElectricityName", ref this.ShipElectricityName);
             node.TryGetValue("ScreenMessageLife", ref this.ScreenMessageLife);
             node.TryGetValue("ScreenMessageWarningLife", ref this.ScreenMessageWarningLife);
+            node.TryGetValue("fillFromPod", ref this.fillFromPod);
         }
     }
 }
