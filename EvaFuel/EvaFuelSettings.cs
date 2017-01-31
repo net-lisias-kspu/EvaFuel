@@ -10,6 +10,7 @@
 
         public int ScreenMessageLife;
         public int ScreenMessageWarningLife;
+        
 
         public EvaFuelSettings()
         {
