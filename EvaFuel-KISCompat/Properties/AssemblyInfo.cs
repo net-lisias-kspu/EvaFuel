@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 [assembly: AssemblyTitle ("EvaFuel-KISCompat")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription("KIS compatibility")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
+[assembly: AssemblyCompany("AliceTheGorgon & Spacetux")]
 [assembly: AssemblyProduct ("")]
 [assembly: AssemblyCopyright ("alicethegorgon")]
 [assembly: AssemblyTrademark ("")]

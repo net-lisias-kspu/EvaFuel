@@ -1,0 +1,7 @@
+1.4.3
+	LGG adoption
+	Added log.cs
+	Saves data to a file
+	Adds mission limited fuel
+	Moved all settings into KSP settings page
+	Deleted EvaFuelSettings class

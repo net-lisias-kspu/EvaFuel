@@ -75,7 +75,7 @@ namespace EvaFuel
                         }
                     }
                 }
-                catch (Exception ex)
+                catch 
                 { }
 
             }

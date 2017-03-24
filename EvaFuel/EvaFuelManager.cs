@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +18,10 @@ namespace EvaFuel
     public class EvaFuelManager : MonoBehaviour
     {
 
-        public EvaFuelSettings settings { get; set; }
-
         static Dictionary<string, kerbalEVAFueldata> kerbalEVAlist;
 
         public void Awake()
         {
-            this.settings = new EvaFuelSettings();
-            this.LoadSettings();
             GameEvents.onCrewOnEva.Add(this.onEvaStart);
             GameEvents.onCrewBoardVessel.Add(this.onEvaEnd);
 
@@ -43,26 +38,10 @@ namespace EvaFuel
         }
 
 
-        public void LoadSettings()
-        {
-            ConfigNode[] nodes;
-            nodes = GameDatabase.Instance.GetConfigNodes("EvaFuelSettings");
-            if (nodes != null)
-            {
-                for (int i = 0; i < nodes.Length; i++)
-                {
-                    this.settings.Load(nodes[i]);
-                }
-            }
-        }
-        public bool ModEnabled
-        { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ModEnabled; } }
-        public bool ShowInfoMessage
-        { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowInfoMessage; } }
-        public bool ShowLowFuelWarning
-        { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowLowFuelWarning; } }
-        public bool DisableLowFuelWarningLandSplash
-        { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().DisableLowFuelWarningLandSplash; } }
+        public bool ModEnabled { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ModEnabled; } }
+        public bool ShowInfoMessage { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowInfoMessage; } }
+        public bool ShowLowFuelWarning { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowLowFuelWarning; } }
+        public bool DisableLowFuelWarningLandSplash { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().DisableLowFuelWarningLandSplash; } }
 
 
         public void onEvaStart(GameEvents.FromToAction<Part, Part> data)
@@ -70,15 +49,8 @@ namespace EvaFuel
 
             if (ModEnabled)
             {
-                string shipProp = this.settings.ShipPropellantName;
-                string evaProp = this.settings.EvaPropellantName;
-                double evaFuelMax = this.settings.EvaTankFuelMax;
-                double conversionFactor = this.settings.FuelConversionFactor; //conversionFactor for changing ration of ship fuel to Eva Fuel. Take special care to check multiplication or division
-                int messageLife = this.settings.ScreenMessageLife;
-
-
-                double takenFuel = data.from.RequestResource(shipProp, evaFuelMax / conversionFactor);
-                double fuelRequest = takenFuel * conversionFactor;
+                double takenFuel = data.from.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
+                double fuelRequest = takenFuel * HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor;
 
                 bool rescueShip = false;
                 if (fuelRequest == 0)
@@ -103,28 +75,28 @@ namespace EvaFuel
                     }
                 }
 
-                if (fuelRequest + 0.001 > evaFuelMax)
+                if (fuelRequest + 0.001 > HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax)
                 { //Floats and doubles don't like exact numbers. :/ Need to test for similarity rather than equality.
-                    data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
                     if (ShowInfoMessage)
                     {
-                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + ".", messageLife, ScreenMessageStyle.UPPER_CENTER);
+                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + ".", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                     }
                 }
                 else if (rescueShip == true && fuelRequest == 0)
                 {
-                    data.to.RequestResource(evaProp, evaFuelMax - 1);//give one unit of eva propellant
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - 1);//give one unit of eva propellant
                     if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + evaProp + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
                     }
                 }
                 else
                 {
-                    data.to.RequestResource(evaProp, evaFuelMax - fuelRequest);
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
                     if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + shipProp + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + evaProp + "!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName + "!", "OK", false, HighLogic.UISkin);
                     }
                 }
             }
@@ -134,18 +106,12 @@ namespace EvaFuel
         {
             if (ModEnabled)
             {
-                string shipProp = this.settings.ShipPropellantName;
-                string evaProp = this.settings.EvaPropellantName;
-                double evaFuelMax = this.settings.EvaTankFuelMax;
-                double conversionFactor = this.settings.FuelConversionFactor;
-                int messageLife = this.settings.ScreenMessageLife;
+                double fuelLeft = data.from.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax);
 
-                double fuelLeft = data.from.RequestResource(evaProp, evaFuelMax);
-
-                data.to.RequestResource(shipProp, -fuelLeft / conversionFactor);
+                data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, -fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
                 if (ShowInfoMessage)
                 {
-                    ScreenMessages.PostScreenMessage("Returned " + Math.Round(fuelLeft / conversionFactor, 2).ToString() + " units of " + shipProp + " to ship.", messageLife, ScreenMessageStyle.UPPER_CENTER);
+                    ScreenMessages.PostScreenMessage("Returned " + Math.Round(fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " to ship.", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                 }
             }
         }
@@ -295,36 +261,4 @@ namespace EvaFuel
             }
         }
     }
-
-    public class EvaFuelDifficultySettings : GameParameters.CustomParameterNode
-    {
-        public override string Title { get { return "Things"; } }
-        public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.ANY; } }
-        public override string Section { get { return "EvaFuel"; } }
-        public override int SectionOrder { get { return 1; } }
-        public override bool HasPresets { get { return false; } }
-
-        [GameParameters.CustomParameterUI("Enable mod for this save?")]
-        public bool ModEnabled = true;
-
-        //[GameParameters.CustomStringParameterUI("Only works if KIS is installed")]
-        //public string KISInfo = "";
-        [GameParameters.CustomParameterUI("Enable KIS integration?")]
-        public bool KISIntegrationEnabled = true;
-
-        [GameParameters.CustomParameterUI("Show fuel transfer message?")]
-        public bool ShowInfoMessage = false;
-
-        [GameParameters.CustomParameterUI("Show low fuel warning?")]
-        public bool ShowLowFuelWarning = true;
-
-        [GameParameters.CustomParameterUI("Disable warning when landed/splashed?")]
-        public bool DisableLowFuelWarningLandSplash = true;
-
-        [GameParameters.CustomParameterUI("Fill from Pod (if false, unable to refuel for entire mission")]
-        public bool fillFromPod = true;
-
-
-    }
-    
 }

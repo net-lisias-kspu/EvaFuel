@@ -7,19 +7,59 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 
-#if false
+#if true
 namespace EvaFuel
 {
 
     // http://forum.kerbalspaceprogram.com/index.php?/topic/147576-modders-notes-for-ksp-12/#comment-2754813
     // search for "Mod integration into Stock Settings
+    // HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>()
 
-    public class EVAFuelSettings : GameParameters.CustomParameterNode
+
+    public class EvaFuelDifficultySettings : GameParameters.CustomParameterNode
     {
-        public override string Title { get { return "General Settings"; } }
+        public override string Title { get { return ""; } }
         public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.ANY; } }
         public override string Section { get { return "EVA Fuel"; } }
         public override int SectionOrder { get { return 1; } }
+        public override bool HasPresets { get { return false; } }
+
+        [GameParameters.CustomParameterUI("Enable mod for this save?")]
+        public bool ModEnabled = true;
+
+        //[GameParameters.CustomStringParameterUI("Only works if KIS is installed")]
+        //public string KISInfo = "";
+        [GameParameters.CustomParameterUI("Enable KIS integration?")]
+        public bool KISIntegrationEnabled = true;
+
+        [GameParameters.CustomParameterUI("Show fuel transfer message?")]
+        public bool ShowInfoMessage = false;
+
+        [GameParameters.CustomParameterUI("Show low fuel warning?")]
+        public bool ShowLowFuelWarning = true;
+
+        [GameParameters.CustomParameterUI("Disable warning when landed/splashed?")]
+        public bool DisableLowFuelWarningLandSplash = true;
+
+        [GameParameters.CustomParameterUI("Fill from Pod", toolTip = "(if false, unable to refuel for entire mission")]
+        public bool fillFromPod = true;
+
+        public override void SetDifficultyPreset(GameParameters.Preset preset)
+        {
+            ModEnabled = true;
+            KISIntegrationEnabled = true;
+            ShowInfoMessage = false;
+            DisableLowFuelWarningLandSplash = true;
+            fillFromPod = true;
+        }
+    }
+
+    public class EVAFuelSettings : GameParameters.CustomParameterNode
+    {
+        public override string Title { get { return ""; } }
+        public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.ANY; } }
+        public override string Section { get { return "EVA Fuel"; } }
+        public override int SectionOrder { get { return 2; } }
         public override bool HasPresets { get { return false; } }
 
         
@@ -45,46 +85,25 @@ namespace EvaFuel
         [GameParameters.CustomIntParameterUI("Screen Message Life", maxValue = 10)]
         public int ScreenMessageLife = 5;
 
-        [GameParameters.CustomIntParameterUI("Screen Message Warning Life", maxValue = 10)]
-        public int ScreenMessageWarningLife = 10;
+        // Currently not used
+        //[GameParameters.CustomIntParameterUI("Screen Message Warning Life", maxValue = 10)]
+        //public int ScreenMessageWarningLife = 10;
 
-        [GameParameters.CustomParameterUI("Fill from Pod")]
-        public bool fillFromPod = true;
+        //[GameParameters.CustomParameterUI("Fill from Pod")]
+        //public bool fillFromPod = true;
 
 
-#if false
+#if true
         public override void SetDifficultyPreset(GameParameters.Preset preset)
         {
-            switch (preset)
-            {
-                case GameParameters.Preset.Easy:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
+            EvaTankFuelMax = 5.0f;
+            FuelConversionFactor = 1.0f;
+            EvaPropellantName = "EVA Propellant";
+            ShipPropellantName = "MonoPropellant";
+            ShipElectricityName = "ElectricCharge";
+            ScreenMessageLife = 5;
+            //ScreenMessageWarningLife = 10;
 
-                case GameParameters.Preset.Normal:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-
-                case GameParameters.Preset.Moderate:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-
-                case GameParameters.Preset.Hard:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-            }
         }
 #endif
         public override bool Enabled(MemberInfo member, GameParameters parameters)
