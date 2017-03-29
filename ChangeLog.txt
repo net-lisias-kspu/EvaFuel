@@ -5,3 +5,7 @@
 	Adds mission limited fuel
 	Moved all settings into KSP settings page
 	Deleted EvaFuelSettings class
+
+1.4.3.1
+	Fixed isse with onVesselSwitching, function wasn't being removed from event
+	Fixed issue with multiple fucntions being called for onCrewOnEVA

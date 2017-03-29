@@ -25,7 +25,7 @@ namespace EvaFuel
             GameEvents.onCrewOnEva.Add(this.onEvaStart);
             GameEvents.onCrewBoardVessel.Add(this.onEvaEnd);
 
-            GameEvents.onCrewOnEva.Add(this.onEvaHandler);
+           // GameEvents.onCrewOnEva.Add(this.onEvaHandler);
             GameEvents.onCrewBoardVessel.Add(this.onBoardHandler);
             GameEvents.onVesselSwitching.Add(this.onVesselSwitching);
             FileOperations fileops = new FileOperations();
@@ -99,6 +99,26 @@ namespace EvaFuel
                         PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName + "!", "OK", false, HighLogic.UISkin);
                     }
                 }
+
+                Log.Info("onEvaHandler");
+                if (data.to == null || data.from == null)
+                    return;
+
+
+                var resource = data.from.Resources.Where(p => p.info.name == resourceName).First();
+                if (resource == null)
+                {
+                    Log.Info("Resource not found: " + resourceName + " in part: " + data.from.partInfo.title);
+                    return;
+                }
+                lastPart = data.to;
+
+                Log.Info(
+                    string.Format("[{0}] Caught OnCrewOnEva event to part ({1}) containing this resource ({2})",
+                        this.GetType().Name,
+                        data.to.partInfo.title,
+                        this.resourceName));
+
             }
         }
 
@@ -120,8 +140,9 @@ namespace EvaFuel
 
         private void OnDestroy()
         {
-            GameEvents.onCrewOnEva.Remove(this.onEvaHandler);
+            GameEvents.onCrewOnEva.Remove(this.onEvaStart);
             GameEvents.onCrewBoardVessel.Remove(this.onBoardHandler);
+            GameEvents.onVesselSwitching.Remove(this.onVesselSwitching);
         }
 
         string resourceName = "EVA Propellant";
@@ -189,7 +210,7 @@ namespace EvaFuel
         }
 
 
-
+#if false
         private void onEvaHandler(GameEvents.FromToAction<Part, Part> data)
         {
             Log.Info("onEvaHandler");
@@ -211,7 +232,7 @@ namespace EvaFuel
                     data.to.partInfo.title,
                     this.resourceName));
         }
-
+#endif
 
         private void onBoardHandler(GameEvents.FromToAction<Part, Part> data)
         {
