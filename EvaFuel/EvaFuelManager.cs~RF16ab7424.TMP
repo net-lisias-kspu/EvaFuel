@@ -32,14 +32,19 @@ namespace EvaFuel
             Log.Info("Awake");
             GameEvents.onCrewOnEva.Add(this.onEvaStart);
             GameEvents.onCrewBoardVessel.Add(this.onEvaEnd);
-            
+
+           // GameEvents.onCrewOnEva.Add(this.onEvaHandler);
+          //  GameEvents.onCrewBoardVessel.Add(this.onBoardHandler);
+
+            GameEvents.onVesselSwitching.Add(this.onVesselSwitching);
+
             FileOperations fileops = new FileOperations();
             if (kerbalEVAlist == null)
                 kerbalEVAlist = FileOperations.Instance.loadKerbalEvaData();
             if (kerbalEVAlist == null)
                 Log.Error("Awake, kerbalEVAlist is null");
-
-
+           
+           
         }
 
 
@@ -47,9 +52,7 @@ namespace EvaFuel
         public bool ShowInfoMessage { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowInfoMessage; } }
         public bool ShowLowFuelWarning { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowLowFuelWarning; } }
         public bool DisableLowFuelWarningLandSplash { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().DisableLowFuelWarningLandSplash; } }
-
-        public string resourceName { get { return HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName; } }
-        public string shipPropName { get { return HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName; } }
+        public string resourceName {  get { return HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName; } }
 
         public void onEvaStart(GameEvents.FromToAction<Part, Part> data)
         {
@@ -59,9 +62,22 @@ namespace EvaFuel
                 if (data.to != null && data.from != null)
                 {
                     Log.Info("data.to/from not null");
-                    this.onEvaHandler(data);
-                }
+                    //this.onEvaHandler(data);
+                    var resource = data.from.Resources.Where(p => p.resourceName == resourceName).First();
+                    if (resource == null)
+                    {
+                        Log.Info("Resource not found: " + resourceName + " in part: " + data.from.partInfo.title);
+                        return;
+                    }
+return;
+                    lastPart = data.to;
 
+                    Log.Info(
+                        string.Format("[{0}] Caught OnCrewOnEva event to part ({1}) containing this resource ({2})",
+                            this.GetType().Name,
+                            data.to.partInfo.title,
+                            this.resourceName));
+                }
 
                 double takenFuel = data.from.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
                 double fuelRequest = takenFuel * HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor;
@@ -90,32 +106,33 @@ namespace EvaFuel
                     }
                 }
 
-                //Floats and doubles don't like exact numbers. :/ Need to test for similarity rather than equality.
                 if (fuelRequest + 0.001 > HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax)
-                {
-                    data.to.RequestResource(resourceName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
+                { //Floats and doubles don't like exact numbers. :/ Need to test for similarity rather than equality.
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
                     if (ShowInfoMessage)
                     {
-                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + resourceName + ".", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
+                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + ".", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                     }
                 }
                 else if (rescueShip == true && fuelRequest == 0)
                 {
-                    data.to.RequestResource(resourceName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - 1);//give one unit of eva propellant
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - 1);//give one unit of eva propellant
                     if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + resourceName + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
                     }
                 }
                 else
                 {
-                    data.to.RequestResource(resourceName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
+                    data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax - fuelRequest);
                     if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + resourceName + "!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName + "!", "OK", false, HighLogic.UISkin);
                     }
                 }
+
             }
+
         }
 
         public void onEvaEnd(GameEvents.FromToAction<Part, Part> data)
@@ -123,16 +140,15 @@ namespace EvaFuel
             Log.Info("onEvaEnd");
             if (ModEnabled)
             {
-                double fuelLeft = data.from.RequestResource(resourceName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax);
+                onBoardHandler(data);
 
-                double fuelStored = data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, -fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
+                double fuelLeft = data.from.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax);
+
+                data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, -fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
                 if (ShowInfoMessage)
                 {
                     ScreenMessages.PostScreenMessage("Returned " + Math.Round(fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " to ship.", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                 }
-                Log.Info("fuelLeft: " + fuelLeft.ToString() + "    fuelStored: " + fuelStored.ToString());
-                data.from.RequestResource(resourceName,  fuelStored + fuelLeft);
-                onBoardHandler(data);
             }
         }
 
@@ -142,45 +158,61 @@ namespace EvaFuel
         {
             Log.Info("OnDestroy");
             GameEvents.onCrewOnEva.Remove(this.onEvaStart);
-            
+            //GameEvents.onCrewBoardVessel.Remove(this.onBoardHandler);
+            GameEvents.onVesselSwitching.Remove(this.onVesselSwitching);
+
+ 
             GameEvents.onCrewBoardVessel.Remove(this.onEvaEnd);
+           // GameEvents.onCrewOnEva.Remove(this.onEvaHandler);
         }
 
+        //string resourceName = "EVA Propellant";
 
-        private void onEvaHandler(GameEvents.FromToAction<Part, Part> data)
+        Part lastPart = null;
+
+        /// <summary>
+        /// Gets the correct amount of resources from the origination vessel.  
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        private void onVesselSwitching(Vessel from, Vessel to)
         {
-            Log.Info("onEvaHandler");
-
-            if (data.to == null || data.from == null)
+            Log.Info("onVesselSwitching");
+        
+            if (to == null || from == null)
                 return;
-
-            Log.Info("onEvaHandler, from: " + data.from.partInfo.name + "   to: " + data.to.partInfo.name);
-            PartResource resource = null;
-            var rL = data.from.Resources.Where(p => p.resourceName == resourceName);
-            if (rL.Count() > 0)
-                resource = data.from.Resources.Where(p => p.resourceName == resourceName).First();
-            if (resource == null)
-            {
-                Log.Info("Resource not found: " + resourceName + " in part: " + data.from.partInfo.title);
+            Log.Info("onVesselSwitching 1");
+            if (lastPart == null)
                 return;
-            }
-            PartResource kerbalResource = null;
-            KerbalEVA kEVA = data.to.FindModuleImplementing<KerbalEVA>();
-            
-            var kerbalResourceList = data.to.Resources.Where(p => p.resourceName == kEVA.propellantResourceName);
-            if (kerbalResourceList.Count() > 0)
-                kerbalResource = kerbalResourceList.First();
-            else
-                Log.Info("Resource not found: " + kEVA.propellantResourceName);
-            if (kerbalEVAlist == null)
-                Log.Error("kerbalEVAlist is null");
-            else
+            Log.Info("lastPart not null");
+            return;
+            Log.Info("onVesselSwitching 2");
+            Log.Info("onVesselSwitching: from: " + from.Parts.First().partInfo.title + "   to: " + to.Parts.First().partInfo.title);
+            if (lastPart == to.Parts.First())
             {
+                Log.Info("lastPart == data.to");
+
+                KerbalEVA kEVA = to.Parts.First().FindModuleImplementing<KerbalEVA>();
+             //   resourceName = kEVA.propellantResourceName;
+
                 kerbalEVAFueldata ked;
-                if (!kerbalEVAlist.TryGetValue(data.to.partInfo.title, out ked))
+
+                var kerbalResource = to.Parts.First().Resources.Where(p => p.info.name == resourceName).First();
+                var shipResource = from.Parts.First().Resources.Where(p => p.info.name == resourceName).First();
+                if (shipResource != null)
+                {
+                    Log.Info("shipResource found");
+                }
+                else
+                    Log.Info("shipResource not found");
+
+                if (kerbalEVAlist == null)
+                    Log.Error("kerbalEVAlist is null");
+
+                if (!kerbalEVAlist.TryGetValue(to.Parts.First().partInfo.title, out ked))
                 {
                     ked = new kerbalEVAFueldata();
-                    ked.name = data.to.partInfo.title;
+                    ked.name = to.Parts.First().partInfo.title;
                     ked.evaPropAmt = kerbalResource.maxAmount;  // New kerbals always get the maxAmount
 
                     kerbalEVAlist.Add(ked.name, ked);
@@ -191,21 +223,35 @@ namespace EvaFuel
 
                 if (HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().fillFromPod)
                 {
-                    double giveBack = kerbalResource.maxAmount - ked.evaPropAmt;                    
+                    double giveBack = kerbalResource.maxAmount - ked.evaPropAmt;
 
-                    double sentBackAmount = data.from.RequestResource(this.resourceName, -1 * giveBack);
+                    double sentBackAmount = from.Parts.First().RequestResource(this.resourceName, -1 * giveBack);
                     kerbalResource.amount = ked.evaPropAmt;
 
                     Log.Info(string.Format("Returned {0} {1} to {2}",
                         sentBackAmount,
                         this.resourceName,
-                        data.from.partInfo.title));
+                        from.Parts.First().partInfo.title));
                 }
                 FileOperations.Instance.saveKerbalEvaData(kerbalEVAlist);
             }
-            
+        }
 
-          //  lastPart = data.to;
+       
+        private void onEvaHandler(GameEvents.FromToAction<Part, Part> data)
+        {
+            Log.Info("onEvaHandler");
+            if (data.to == null || data.from == null)
+                return;
+
+
+            var resource = data.from.Resources.Where(p => p.info.name == resourceName).First();
+            if (resource == null)
+            {
+                Log.Info("Resource not found: " + resourceName + " in part: " + data.from.partInfo.title);
+                return;
+            }
+            lastPart = data.to;
 
             Log.Info(
                 string.Format("[{0}] Caught OnCrewOnEva event to part ({1}) containing this resource ({2})",
@@ -216,12 +262,14 @@ namespace EvaFuel
 
         private void onBoardHandler(GameEvents.FromToAction<Part, Part> data)
         {
+            return;
             Log.Info("onBoardHandler");
             if (data.to == null || data.from == null)
                 return;
-            
+
+            Log.Info("onBoardHandler 2");
             KerbalEVA kEVA = data.from.FindModuleImplementing<KerbalEVA>();
-            // resourceName = kEVA.propellantResourceName;
+           // resourceName = kEVA.propellantResourceName;
 
             var fromResource = data.from.Resources.Where(p => p.info.name == resourceName).First();
             if (fromResource == null)
@@ -233,6 +281,7 @@ namespace EvaFuel
 
             if (kerbalEVAlist.TryGetValue(data.from.partInfo.title, out ked))
             {
+                Log.Info("kerbal: " + data.from.partInfo.title + " found in list");
                 ked.evaPropAmt = fromResource.amount;
             }
             else
@@ -243,6 +292,7 @@ namespace EvaFuel
 
                 ked.name = data.from.partInfo.title;
                 ked.evaPropAmt = fromResource.amount;
+
                 kerbalEVAlist.Add(ked.name, ked);
             }
             FileOperations.Instance.saveKerbalEvaData(kerbalEVAlist);

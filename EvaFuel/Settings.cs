@@ -72,11 +72,11 @@ namespace EvaFuel
           toolTip = "Ratio")]
         public double FuelConversionFactor = 1.0f;
 
-        [GameParameters.CustomStringParameterUI("EVA Propellent Type", autoPersistance = true, lines = 1, title = "EVA Propellent Type")]
+        [GameParameters.CustomStringParameterUI("EVA Propellent Type", autoPersistance = true, lines = 1, title = "EVA Propellent Type")]       
         public string EvaPropellantName = "EVA Propellant";
 
         [GameParameters.CustomStringParameterUI("Ship Propellent Type", autoPersistance = true, lines = 1, title = "Ship Propellent Type")]
-         public string ShipPropellantName = "MonoPropellant";
+        public string ShipPropellantName = "MonoPropellant";
 
 
         [GameParameters.CustomStringParameterUI("Ship Electricity Name", autoPersistance = true, lines = 2, title = "Ship Electricity Name")]
@@ -100,6 +100,7 @@ namespace EvaFuel
             FuelConversionFactor = 1.0f;
             EvaPropellantName = "EVA Propellant";
             ShipPropellantName = "MonoPropellant";
+            
             ShipElectricityName = "ElectricCharge";
             ScreenMessageLife = 5;
             //ScreenMessageWarningLife = 10;

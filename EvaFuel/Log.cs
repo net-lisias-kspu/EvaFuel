@@ -17,7 +17,7 @@ namespace EvaFuel
             DETAIL = 4,
             TRACE = 5
         };
-        static string PREFIX = "";
+        static string PREFIX = "EVAFuel: ";
 
         public static void setTitle(string t)
         {

@@ -9,3 +9,8 @@
 1.4.3.1
 	Fixed isse with onVesselSwitching, function wasn't being removed from event
 	Fixed issue with multiple fucntions being called for onCrewOnEVA
+
+1.4.3.2
+	Fixed build environment (was building for .net 4)
+	Fixed EVA fuel not being used
+	Fixed EVA fuels being preserved when entering vessel which doesn't have storage

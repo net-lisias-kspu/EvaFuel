@@ -69,7 +69,6 @@ namespace EvaFuel
 
                             dataNode.TryGetValue("name", ref ked.name);
                             ked.evaPropAmt = Double.Parse(dataNode.GetValue("evaPropAmt"));
-
                             kerbalEVAList.Add(ked.name, ked);
 
                         }
