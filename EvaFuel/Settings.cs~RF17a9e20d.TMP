@@ -24,16 +24,14 @@ namespace EvaFuel
             answered
         };
         public Answer answer = Answer.inActive;
-        public float lastTimeTic = 0;
 
-        private Rect settingsRect = new Rect(200, 200, 275, 400);
+        private Rect settingsRect = new Rect(200, 200, 250, 400);
 
         int curResIndex = -1;
         Vector2 scrollPosition1 = Vector2.zero;
         static List<PartResourceDefinition> allResources = null;
         static List<string> allResourcesDisplayNames = null;
         static List<string> fuelResources = null;
-        static List<string> bannedResources = null;
 
         public string selectedFuel;
 
@@ -51,45 +49,17 @@ namespace EvaFuel
 
             smallScrollBar = new GUIStyle(HighLogic.Skin.verticalScrollbar);
             smallScrollBar.fixedWidth = 8f;
+
         }
 
         void OnGUI()
         {
             if (answer == Answer.inActive)
                 return;
-            if (Time.realtimeSinceStartup - lastTimeTic > 0.25)
-            {
-                answer = Answer.inActive;
-                return;
-            }
-#if false
-            DifficultyOptionsMenu dom = (DifficultyOptionsMenu)FindObjectOfType(typeof(DifficultyOptionsMenu));
-            List<GameObject> GameObjects = new List<GameObject>(FindObjectsOfType<GameObject>());
-            foreach (var go in GameObjects)
-                if (go.name == "GameDifficulty dialog handler")
-                {
-                    //   go.SetActive(false);
-                    var o = go.GetComponents<DialogGUIToggleButton>();
-                    foreach (var o1 in o)
-                        Log.Info("o1: " + o1.label);
-                    
-                }
-            
-            if (dom)
-            {
-                Log.Info("DifficultyOptionsMenu found");
-                dom.enabled = false;
 
-
-            }
-#endif
             Draw();
         }
 
-        string setLabel()
-        {
-            return "xxx";
-        }
         public void Draw()
         {
             if (allResources == null)
@@ -121,19 +91,19 @@ namespace EvaFuel
             configFile = ConfigNode.Load(fname);
             if (configFile != null)
             {
+                if (banned)
+                    configFileNode = configFile.GetNode(BANNED_RESOURCES);
+                else
                 configFileNode = configFile.GetNode(EVAFUEL_NODE);
 
                 if (configFileNode != null)
                 {
-                    if (banned)
-                        configDataNode = configFileNode.GetNode(BANNED_RESOURCES);
-                    else
-                        configDataNode = configFileNode.GetNode(EVA_FUELRESOURCES);
+                    configDataNode = configFileNode.GetNode(EVA_FUELRESOURCES);
                     if (configDataNode != null)
                         fr = configDataNode.GetValuesList("resource");
                 }
                 else
-                    Log.Error("NODENAME not found: " + EVAFUEL_NODE);
+                    Log.Error("TT_NODENAME not found: " + EVAFUEL_NODE);
             }
             else
                 Log.Error("File not found: " + fname);
@@ -159,7 +129,7 @@ namespace EvaFuel
                         if (ar.displayName != null)
                             allResourcesDisplayNames.Add(ar.displayName);
                         else
-                            allResourcesDisplayNames.Add( ar.name);
+                            allResourcesDisplayNames.Add(ar.displayName);
                         if (ar.name == HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName)
                             curResIndex = cnt;
                         cnt++;
@@ -174,12 +144,7 @@ namespace EvaFuel
             {
                 foreach (var ar in allResources)
                 {
-                    if (bannedResources.Contains(ar.name))
-                        continue;
-                    if (ar.displayName != null)
-                        allResourcesDisplayNames.Add(ar.displayName);
-                    else
-                        allResourcesDisplayNames.Add(ar.name);
+                    allResourcesDisplayNames.Add(ar.displayName);
                     if (ar.name == HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName)
                         curResIndex = cnt;
                     cnt++;
@@ -198,8 +163,6 @@ namespace EvaFuel
             }
             allResources = allResources.OrderBy(o => o.displayName).ToList();
             fuelResources = getFuelResources();
-            bannedResources = getFuelResources(true);
-            
             fillResourceDisplayNames();
             
         }
@@ -397,18 +360,17 @@ namespace EvaFuel
         }
         private const string controlLock = "EVAFuelSettings";
 
-        
-
         public override bool Interactible(MemberInfo member, GameParameters parameters)
         {
             if (changeEVAPropellent)
             {
-                SelectEVAFuelType.Instance.lastTimeTic = Time.realtimeSinceStartup;
                 switch (SelectEVAFuelType.Instance.answer)
                 {
                     case SelectEVAFuelType.Answer.inActive:
                         SelectEVAFuelType.Instance.answer = SelectEVAFuelType.Answer.notAnswered;
-                        InputLockManager.SetControlLock(ControlTypes.KEYBOARDINPUT, controlLock);                        
+                        InputLockManager.SetControlLock(ControlTypes.KEYBOARDINPUT, controlLock);
+
+                        
                         return false;
 
                     case SelectEVAFuelType.Answer.answered:

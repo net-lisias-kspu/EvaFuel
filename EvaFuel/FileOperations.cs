@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Text;
-
+#if false
 
 namespace EvaFuel
 {
@@ -13,11 +13,12 @@ namespace EvaFuel
     {
         public static FileOperations Instance;
 
-        public readonly static string MOD = Assembly.GetAssembly(typeof(EvaFuelManager)).GetName().Name;
-        public static readonly String ROOT_PATH = KSPUtil.ApplicationRootPath;
+        
+        
         private string SAVE_PATH = ROOT_PATH + "saves/" + HighLogic.SaveFolder;
         public static string TT_DATAFILE = MOD + ".cfg";
-        public static String TT_NODENAME = MOD;
+        
+
 
         /// <summary>
         /// Set the Instance upon creation, this will keep this around forever
@@ -27,6 +28,9 @@ namespace EvaFuel
             Instance = this;
         }
 
+
+
+#if false
         /// <summary>
         /// Get the name of the file to save/load
         /// </summary>
@@ -109,5 +113,9 @@ namespace EvaFuel
             configFile.Save(fname);
         }
 
+    
+#endif
     }
 }
+
+#endif

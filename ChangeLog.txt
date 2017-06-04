@@ -14,3 +14,9 @@
 	Fixed build environment (was building for .net 4)
 	Fixed EVA fuel not being used
 	Fixed EVA fuels being preserved when entering vessel which doesn't have storage
+
+1.5.0
+	Updated for 1.3
+	Disabled the "fill from pod" option
+	Fixed eva fuel disappearing into the ether when entering a vessel which doesn't have eva fuel storage
+	Added resource selection dialog in settings page
