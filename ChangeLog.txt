@@ -20,3 +20,6 @@
 	Disabled the "fill from pod" option
 	Fixed eva fuel disappearing into the ether when entering a vessel which doesn't have eva fuel storage
 	Added resource selection dialog in settings page
+
+1.6.0
+	Updated for KSP 1.3.1
