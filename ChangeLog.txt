@@ -25,4 +25,12 @@
 	Updated for KSP 1.3.1
 
 1.6.0.1
-	Fixed type in EVAFuel.cfg ( MonoPropellent should have been MonoPropellant)
+	Fixed typo in EVAFuel.cfg ( MonoPropellent should have been MonoPropellant)
+
+1.6.1
+	Following thanks to @whale_2:
+		Modified EvaFuelManager.onEvaStart to look up KerbalEVA.propellantResourceDefaultAmount
+		and apply changes proportionally I.e. if that amount is equal to 5 (default value as per
+		https://kerbalspaceprogram.com/api/class_kerbal_e_v_a.html#a7ce0916b13d2c62ac0e130a8aec2a33c),
+		then full value of EvaTankFuelMax as configured in CustomSettings will be requested, or if
+		this amount is 2, then only 2/5 * EvaTankFuelMax will be requested.
