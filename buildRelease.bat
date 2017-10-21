@@ -1,7 +1,4 @@
 
-
-
-
 @echo off
 
 copy /Y "EVAFuel\bin\Release\EVAFuel.dll" "GameData\EVAFuel\Plugins"

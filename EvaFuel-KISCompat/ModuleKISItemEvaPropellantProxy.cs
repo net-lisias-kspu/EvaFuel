@@ -38,15 +38,8 @@ namespace EvaFuel
 
 					if (fuelRequest + 0.001 < fuelMax - fuelLeft) {//0.001 for floating point rounding issues. Don't want to trigger insufficient fuel all the time.
 						if (ShowLowFuelWarning) {
-							PopupDialog.SpawnPopupDialog (
-								new Vector2 (0.5f, 0.5f), 
-								new Vector2 (0.5f, 0.5f), 
-								"evaFuelDialog",
-								"Low EVA Fuel!", 
-								"Warning! Only " + Math.Round (takenFuel, 2).ToString () + " units of " + shipPropName + " were available to refill the EVA Canister! Meaning it only has " + Math.Round (fuelLeft + fuelRequest, 2).ToString () + " units of " + resourceName + "!", 
-								"OK", 
-								false, 
-								HighLogic.UISkin);
+							PopupDialog.SpawnPopupDialog (new Vector2 (0.5f, 0.5f), new Vector2 (0.5f, 0.5f), "OnItemUse", "Low EVA Fuel!", "Warning! Only " + Math.Round (takenFuel, 2).ToString () + " units of " + shipPropName + " were available to refill the EVA Canister! Meaning it only has " + Math.Round (fuelLeft + fuelRequest, 2).ToString () + " units of " + resourceName + "!", "OK", false, HighLogic.UISkin);
+
 						}
 					} else {
 						if (ShowInfoMessage) {
