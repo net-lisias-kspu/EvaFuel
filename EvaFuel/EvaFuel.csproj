@@ -61,10 +61,10 @@
       <HintPath>R:\KSP_1.3.1_dev\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Scale">
-      <HintPath>R:\KSP_1.3.0_dev\GameData\TweakScale\plugins\Scale.dll</HintPath>
+      <HintPath>R:\KSP_1.3.1_dev\GameData\TweakScale\plugins\Scale.dll</HintPath>
     </Reference>
     <Reference Include="Scale_Redist">
-      <HintPath>R:\KSP_1.3.0_dev\GameData\TweakScale\plugins\Scale_Redist.dll</HintPath>
+      <HintPath>R:\KSP_1.3.1_dev\GameData\TweakScale\plugins\Scale_Redist.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\System.dll</HintPath>
@@ -86,11 +86,9 @@ set textTemplatingPath="%25ProgramFiles(x86)%25\Microsoft Visual Studio\2017\Com
 %25textTemplatingPath%25 "$(ProjectDir)AssemblyVersion.tt"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>start /D D:\Users\jbb\github\EVAFuel /WAIT deploy.bat
+    <PostBuildEvent>
+start /D D:\Users\jbb\github\EVAFuel /WAIT deploy.bat  $(TargetDir) $(TargetFileName) copyonly
 
-if $(ConfigurationName) == Release (
-start /D D:\Users\jbb\github\EVAFuel  /WAIT buildRelease.bat
-)
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

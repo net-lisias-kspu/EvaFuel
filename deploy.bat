@@ -1,12 +1,22 @@
 
+@echo off
+
+rem H is the destination game folder
+rem GAMEDIR is the name of the mod folder (usually the mod name)
+rem GAMEDATA is the name of the local GameData
+rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA,
+rem    but not always
 
 set H=R:\KSP_1.3.1_dev
-echo %H%
+set GAMEDIR=EVAFuel
+set GAMEDATA="GameData\"
+set VERSIONFILE=%GAMEDIR%.version
 
-copy /Y "EVAFuel\bin\Debug\EVAFuel.dll" "GameData\EVAFuel\Plugins"
-copy /Y "EvaFuel-KISCompat\bin\Debug\EvaFuelKISCompat.dll"  "GameData\EVAFuel\Plugins"
-copy /Y EVAFuel.version GameData\EVAFuel
+copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
+if "%3" == "" (
 
-cd GameData
-mkdir "%H%\GameData\EVAFuel"
-xcopy /y /s EVAFuel "%H%\GameData\EVAFuel"
+	copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
+
+	xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
+)
+pause

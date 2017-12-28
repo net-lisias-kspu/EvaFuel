@@ -11,7 +11,7 @@ using UnityEngine;
 namespace EvaFuel
 {
 
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     class SelectEVAFuelType : MonoBehaviour
     {
         public static SelectEVAFuelType Instance;

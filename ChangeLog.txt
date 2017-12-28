@@ -34,3 +34,6 @@
 		https://kerbalspaceprogram.com/api/class_kerbal_e_v_a.html#a7ce0916b13d2c62ac0e130a8aec2a33c),
 		then full value of EvaTankFuelMax as configured in CustomSettings will be requested, or if
 		this amount is 2, then only 2/5 * EvaTankFuelMax will be requested.
+
+1.6.2
+	Fixed nullref when entering settings from mainmenu (ie: setting up a new game) and changing EVA fuel type

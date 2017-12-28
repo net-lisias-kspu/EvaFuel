@@ -37,11 +37,10 @@
       <HintPath>R:\KSP_1.3.1_dev\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="KIS">
-      <HintPath>R:\KSP_1.2.2_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
+      <HintPath>R:\KSP_1.3.1_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
     </Reference>
-    <Reference Include="KSPDev_Utils.0.20.0, Version=0.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>R:\KSP_1.2.2_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.0.20.0.dll</HintPath>
+    <Reference Include="KSPDev_Utils.0.30">
+      <HintPath>R:\KSP_1.3.1_dev\GameData\KIS\Plugins\KSPDev_Utils.0.30.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>R:\KSP_1.2.2_dev\KSP_x64_Data\Managed\System.dll</HintPath>
@@ -66,4 +65,12 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+start /D D:\Users\jbb\github\EVAFuel /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
+
+if $(ConfigurationName) == Release (
+	start /D D:\Users\jbb\github\EVAFuel /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
