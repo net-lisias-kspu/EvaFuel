@@ -10,6 +10,15 @@ using UnityEngine;
 
 namespace EvaFuel
 {
+    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
+    public class EVAFuelGlobals : MonoBehaviour
+    {
+        public static bool changeEVAPropellent;
+        void Start()
+        {
+            changeEVAPropellent = false;
+        }
+    }
 
     [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     class SelectEVAFuelType : MonoBehaviour
@@ -325,7 +334,7 @@ namespace EvaFuel
         public override bool Interactible(MemberInfo member, GameParameters parameters)
         {
             
-            return !HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().changeEVAPropellent;
+            return !EVAFuelGlobals.changeEVAPropellent;
         }
     }
 
@@ -393,6 +402,7 @@ namespace EvaFuel
 
         public override bool Enabled(MemberInfo member, GameParameters parameters)
         {
+            EVAFuelGlobals.changeEVAPropellent = changeEVAPropellent;
             return true; //otherwise return true
         }
         private const string controlLock = "EVAFuelSettings";

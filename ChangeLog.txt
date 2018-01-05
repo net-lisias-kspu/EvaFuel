@@ -37,3 +37,6 @@
 
 1.6.2
 	Fixed nullref when entering settings from mainmenu (ie: setting up a new game) and changing EVA fuel type
+
+1.6.3
+	Fixed null ref (again) when entering settings and changing EVA fuel type
