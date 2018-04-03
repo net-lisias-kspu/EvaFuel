@@ -40,3 +40,6 @@
 
 1.6.3
 	Fixed null ref (again) when entering settings and changing EVA fuel type
+
+1.6.4
+	Updated for KSP 1.4.1+
