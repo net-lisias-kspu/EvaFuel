@@ -43,3 +43,7 @@
 
 1.6.4
 	Updated for KSP 1.4.1+
+
+1.6.5
+	Changed logic which determines whether a ship is a rescue ship or not.  Previously was looking for kerbals full name in the
+		contract title, seems that it changed and now the contract only has the kerbals first name

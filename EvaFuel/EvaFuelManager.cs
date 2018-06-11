@@ -102,7 +102,7 @@ namespace EvaFuel
                             {
                                 for (int currentContract = 0; currentContract < contracts.Count; currentContract++)
                                 {
-                                    if (contracts[currentContract].Title.Contains(crewList[currentCrew].name) && data.from.vessel.name.Contains(crewList[currentCrew].name.Split(null)[0]))
+                                    if (contracts[currentContract].Title.Contains(crewList[currentCrew].name.Split(null)[0]) && data.from.vessel.name.Contains(crewList[currentCrew].name.Split(null)[0]))
                                     {//Please do not rename your ship to have a rescue contract Kerbal name in it if the contract is active.
                                         rescueShip = true;
                                     }
