@@ -32,13 +32,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.5.1_dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="KIS, Version=1.9.6571.274, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="KIS, Version=1.12.6700.37736, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.5.1_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
     </Reference>
-    <Reference Include="KSPDev_Utils.0.33, Version=0.33.6700.37148, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>R:\KSP_1.5.1_dev\GameData\KIS\Plugins\KSPDev_Utils.0.33.dll</HintPath>
+    <Reference Include="KSPDev_Utils.0.37">
+      <HintPath>R:\KSP_1.5.1_dev\GameData\KIS\Plugins\KSPDev_Utils.0.37.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
