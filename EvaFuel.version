@@ -1,7 +1,7 @@
 {
   "NAME": "EVAFuelContinued",
   "URL": "http://ksp.spacetux.net/avc/EvaFuel",
-  "DOWNLOAD": "http://spacedock.info/mod/613/EvaFuel",
+  "DOWNLOAD": "http://spacedock.info/mod/1274/EvaFuel",
   "GITHUB": {
     "USERNAME": "linuxgurugamer",
     "REPOSITORY": "EvaFuel"
@@ -10,7 +10,7 @@
     "MAJOR": 1,
     "MINOR": 6,
     "PATCH": 5,
-    "BUILD": 2
+    "BUILD": 3
   },
   "KSP_VERSION": {
     "MAJOR": 1,

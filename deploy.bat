@@ -19,4 +19,3 @@ if "%3" == "" (
 
 	xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
 )
-pause

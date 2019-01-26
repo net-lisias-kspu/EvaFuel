@@ -50,3 +50,6 @@
 
 1.6.5.1
 	Version bump for 1.5 rebuild
+
+1.6.5.3
+	Fixed download link in .version file
