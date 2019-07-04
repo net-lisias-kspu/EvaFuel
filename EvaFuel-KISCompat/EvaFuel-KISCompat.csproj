@@ -37,7 +37,7 @@
       <HintPath>R:\KSP_1.7.2_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
     </Reference>
     <Reference Include="KSPDev_Utils.1.2">
-      <HintPath>R:\KSP_1.7.1_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.1.2.dll</HintPath>
+      <HintPath>R:\KSP_1.7.2_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.1.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
