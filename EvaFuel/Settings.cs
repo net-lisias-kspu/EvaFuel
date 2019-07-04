@@ -333,7 +333,8 @@ namespace EvaFuel
         }
         public override bool Interactible(MemberInfo member, GameParameters parameters)
         {
-            
+            if (HighLogic.CurrentGame == null)
+                return true;
             return !EVAFuelGlobals.changeEVAPropellent;
         }
     }
