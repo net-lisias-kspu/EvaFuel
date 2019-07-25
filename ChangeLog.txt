@@ -61,3 +61,4 @@
 
 1.6.6.1
 	Added InstallChecker.cs
+	updated KIS_Item reference

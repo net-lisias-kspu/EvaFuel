@@ -34,7 +34,7 @@ namespace EvaFuel
 
 					double takenFuel = item.inventory.part.RequestResource (shipPropName, (fuelMax - fuelLeft) / fuelConvFactor);
 					double fuelRequest = takenFuel * fuelConvFactor;
-					item.SetResource (resourceName, fuelLeft + fuelRequest);
+					item.UpdateResource (resourceName, fuelLeft + fuelRequest);
 
 					if (fuelRequest + 0.001 < fuelMax - fuelLeft) {//0.001 for floating point rounding issues. Don't want to trigger insufficient fuel all the time.
 						if (ShowLowFuelWarning) {

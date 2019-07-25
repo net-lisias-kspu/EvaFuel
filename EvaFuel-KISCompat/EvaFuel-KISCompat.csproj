@@ -7,7 +7,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>EvaFuel</RootNamespace>
     <AssemblyName>EvaFuelKISCompat</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,12 +33,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.7.2_dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="KIS, Version=1.12.6700.37736, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="KIS, Version=1.10.6640.40620, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.7.2_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
     </Reference>
-    <Reference Include="KSPDev_Utils.1.2">
-      <HintPath>R:\KSP_1.7.2_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.1.2.dll</HintPath>
+    <Reference Include="KSPDev_Utils.1.2, Version=1.2.7031.33522, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\KSP_1.7.2_dev\GameData\KIS\Plugins\KSPDev_Utils.1.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
