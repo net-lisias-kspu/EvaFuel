@@ -19,8 +19,8 @@ namespace EvaFuel
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
     internal class InstallChecker : MonoBehaviour
     {
-        private const string MODNAME = "EVAFuel Continued";
-        private const string FOLDERNAME = "EVAFuel";
+        private const string MODNAME = "EvaFuel Continued";
+        private const string FOLDERNAME = "EvaFuel";
         private const string EXPECTEDPATH = FOLDERNAME + "/Plugins";
 
         protected void Start()

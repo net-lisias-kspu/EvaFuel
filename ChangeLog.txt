@@ -62,3 +62,6 @@
 1.6.6.1
 	Added InstallChecker.cs
 	updated KIS_Item reference
+
+1.6.6.2
+	Fixed case of folder name in the InstallChecker
