@@ -58,3 +58,6 @@
 	Updated for 1.7.2
 	Updated AssemblyVersion.tt
 	Fixed nullrefs when starting a new game and setting the options
+
+1.6.6.1
+	Added InstallChecker.cs
