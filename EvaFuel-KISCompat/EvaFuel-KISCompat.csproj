@@ -37,15 +37,15 @@
     <Reference Include="$(KSPDIR)\KSP_x64_Data\Managed\UnityEngine*.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="KIS, Version=1.22.7090.200, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="KIS, Version=1.23.7234.41726, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.8.0_dev\GameData\KIS\Plugins\KIS.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="KSPDev_Utils.1.2, Version=1.2.7031.33522, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="KSPDev_Utils.2.0, Version=2.0.7231.38433, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(KSPDIR)\GameData\KIS\Plugins\KSPDev_Utils.1.2.dll</HintPath>
+      <HintPath>R:\KSP_1.8.0_dev\GameData\KIS\Plugins\KSPDev_Utils.2.0.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyVersion.cs">
