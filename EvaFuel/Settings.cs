@@ -54,6 +54,7 @@ namespace EvaFuel
         void Start()
         {
             Instance = this;
+            ROOT_PATH = KSPUtil.ApplicationRootPath;
             smallButtonStyle = new GUIStyle(HighLogic.Skin.button);
             smallButtonStyle.stretchHeight = false;
             smallButtonStyle.fixedHeight = 20f;
@@ -113,7 +114,7 @@ namespace EvaFuel
                                             GUILayout.ExpandWidth(true),
                                             GUILayout.ExpandHeight(true));
         }
-        public static readonly String ROOT_PATH = KSPUtil.ApplicationRootPath;
+        public String ROOT_PATH = "";
         public readonly static string MOD = Assembly.GetAssembly(typeof(EvaFuelManager)).GetName().Name;
         static string EVA_FUELRESOURCES = "FUELRESOURCES";
         static string BANNED_RESOURCES = "BANNED";

@@ -65,3 +65,9 @@
 
 1.6.6.2
 	Fixed case of folder name in the InstallChecker
+
+1.6.7 
+	Thanks to github user @SlimJimDodger for the following:
+		Changed initialization of ROOT_PATH from instantiation to the Start function in Settings.cs
+	Added InstallChecker to EvaFuel-KISCompat dll
+	Updated for KSP 1.8
