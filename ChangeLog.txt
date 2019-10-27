@@ -71,3 +71,6 @@
 		Changed initialization of ROOT_PATH from instantiation to the Start function in Settings.cs
 	Added InstallChecker to EvaFuel-KISCompat dll
 	Updated for KSP 1.8
+
+1.6.7.1
+	Updated MiniAVC.dll to 1.4.0.2 to fix a nasty CTD
