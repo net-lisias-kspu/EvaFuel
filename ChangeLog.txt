@@ -79,3 +79,11 @@ ChangeLog
 
 1.6.7.2
 	Really did the MiniAVC update
+
+1.6.7.3
+	Thanks to @Zer0kerbal for this:
+		Create AddPodMonoPropollant.cfg
+			Make sure all Pods(crewCapacity>0) (should also include pods in rescue 
+			contracts) have at least 5 units of MonoPropellant
+		Create ConvertEVATanktoMonoPropellant.cfg to convert EvaPropellant to
+			monoprop
