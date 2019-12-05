@@ -35,21 +35,29 @@ namespace EvaFuel
         public Answer answer = Answer.inActive;
         public float lastTimeTic = 0;
 
-        private Rect settingsRect = new Rect(200, 200, 275, 400);
+        private Rect settingsRect;
 
         int curResIndex = -1;
-        Vector2 scrollPosition1 = Vector2.zero;
+        Vector2 scrollPosition1;
         static List<PartResourceDefinition> allResources = null;
         static List<string> allResourcesDisplayNames = null;
         static List<string> fuelResources = null;
         static List<string> bannedResources = null;
 
         public string selectedFuel;
+        GUIStyle smallButtonStyle, smallScrollBar;
+        public String ROOT_PATH = "";
+        public static string MOD;
+        static string EVA_FUELRESOURCES = "FUELRESOURCES";
+        static string BANNED_RESOURCES = "BANNED";
+        public static String EVAFUEL_NODE = MOD;
+
+        bool allRes = false;
+        bool fuelRes = true;
 
         public SelectEVAFuelType()
         {
         }
-        GUIStyle smallButtonStyle, smallScrollBar;
 
         void Start()
         {
@@ -61,6 +69,10 @@ namespace EvaFuel
 
             smallScrollBar = new GUIStyle(HighLogic.Skin.verticalScrollbar);
             smallScrollBar.fixedWidth = 8f;
+
+            MOD = Assembly.GetAssembly(typeof(EvaFuelManager)).GetName().Name;
+            settingsRect = new Rect(200, 200, 275, 400);
+            scrollPosition1 = Vector2.zero;
         }
 
         void OnGUI()
@@ -100,6 +112,7 @@ namespace EvaFuel
         {
             return "xxx";
         }
+
         public void Draw()
         {
             if (allResources == null)
@@ -114,11 +127,6 @@ namespace EvaFuel
                                             GUILayout.ExpandWidth(true),
                                             GUILayout.ExpandHeight(true));
         }
-        public String ROOT_PATH = "";
-        public readonly static string MOD = Assembly.GetAssembly(typeof(EvaFuelManager)).GetName().Name;
-        static string EVA_FUELRESOURCES = "FUELRESOURCES";
-        static string BANNED_RESOURCES = "BANNED";
-        public static String EVAFUEL_NODE = MOD;
 
         public List<String> getFuelResources(bool banned = false)
         {
@@ -213,8 +221,7 @@ namespace EvaFuel
             fillResourceDisplayNames();
             
         }
-        bool allRes = false;
-        bool fuelRes = true;
+
         void SettingsWindowFcn(int windowID)
         {
 

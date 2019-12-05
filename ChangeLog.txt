@@ -87,3 +87,6 @@ ChangeLog
 			contracts) have at least 5 units of MonoPropellant
 		Create ConvertEVATanktoMonoPropellant.cfg to convert EvaPropellant to
 			monoprop
+
+1.6.7.4
+	Fixed initialization of vars in SelectEVAFuelType
