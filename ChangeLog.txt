@@ -90,3 +90,8 @@ ChangeLog
 
 1.6.7.4
 	Fixed initialization of vars in SelectEVAFuelType
+
+1.6.8
+	Thanks to github user @Goufalite for this improvement:
+		Check if the rescue ship has a name given by the contract (debris, wreck,...)
+		Fix the rescue ship name verification
