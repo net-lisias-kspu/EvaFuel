@@ -45,6 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\KSP_1.8.0_dev\GameData\KIS\Plugins\KSPDev_Utils.2.0.dll</HintPath>
     </Reference>
+    <Reference Include="KSPDev_Utils.2.1">
+      <HintPath>R:\KSP_1.8.1_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.2.1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
