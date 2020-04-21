@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KSP.UI.Screens.Flight;
-
+using KSP.Localization;
 
 namespace EvaFuel
 {
@@ -20,6 +20,8 @@ namespace EvaFuel
     {
 
        public  static Dictionary<string, kerbalEVAFueldata> kerbalEVAlist;
+
+        public List<string> ShipwreckNames = new List<String>();
 
         private void Start()
         {
@@ -42,7 +44,29 @@ namespace EvaFuel
             if (kerbalEVAlist == null)
                 Log.Error("Awake, kerbalEVAlist is null");
 
-
+            // store rescue ship names
+            List<string> locTags = new List<string>()
+            {
+                "#autoLOC_6100036",
+                "#autoLOC_6100037",
+                "#autoLOC_6100038",
+                "#autoLOC_6100039",
+                "#autoLOC_6100040",
+                "#autoLOC_6100041",
+                "#autoLOC_6100042",
+                "#autoLOC_6100043",
+                "#autoLOC_6100044",
+            };
+            Localizer.Init();
+            foreach(string tag in locTags)
+            {
+                string localizedName;
+                if (Localizer.TryGetStringByTag(tag, out localizedName))
+                {
+                    ShipwreckNames.Add(localizedName);
+                }
+                
+            }
         }
 
 
@@ -102,8 +126,10 @@ namespace EvaFuel
                             {
                                 for (int currentContract = 0; currentContract < contracts.Count; currentContract++)
                                 {
-                                    if (contracts[currentContract].Title.Contains(crewList[currentCrew].name.Split(null)[0]) && data.from.vessel.name.Contains(crewList[currentCrew].name.Split(null)[0]))
+                                    if (contracts[currentContract].Title.Contains(crewList[currentCrew].name.Split(null)[0]) 
+                                         && (data.from.vessel.name.Contains(crewList[currentCrew].name.Split(null)[0]) || IsShipwreck(data.from.vessel.name)))
                                     {//Please do not rename your ship to have a rescue contract Kerbal name in it if the contract is active.
+                                        Log.Info("Is a rescue ship!");
                                         rescueShip = true;
                                     }
                                 }
@@ -138,6 +164,11 @@ namespace EvaFuel
                     }
                 }
             }
+        }
+
+        private bool IsShipwreck(string name)
+        {
+            return ShipwreckNames.Any(s => name.Contains(s));
         }
 
         public void onEvaEnd(GameEvents.FromToAction<Part, Part> data)
