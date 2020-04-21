@@ -61,6 +61,9 @@
     <Reference Include="$(KSPDIR)\KSP_x64_Data\Managed\UnityEngine*.dll">
       <Private>False</Private>
     </Reference>
+    <Reference Include="KSPDev_Utils.2.1">
+      <HintPath>R:\KSP_1.8.1_dev\GameData\KSPDev\LogConsole\Plugins\KSPDev_Utils.2.1.dll</HintPath>
+    </Reference>
     <Reference Include="SmartTank">
       <HintPath>R:\KSP_1.8.0_dev\GameData\SmartTank\SmartTank.dll</HintPath>
     </Reference>
