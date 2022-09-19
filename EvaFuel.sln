@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvaFuel", "EvaFuel\EvaFuel.csproj", "{468DD8C1-40EF-470A-9426-5F45395CD01B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvaFuel", "Source\EvaFuel\EvaFuel.csproj", "{468DD8C1-40EF-470A-9426-5F45395CD01B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvaFuel-KISCompat", "EvaFuel-KISCompat\EvaFuel-KISCompat.csproj", "{343FD820-217C-4FE3-9A81-3A03B5DB2CBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvaFuel-KISCompat", "Source\EvaFuel-KISCompat\EvaFuel-KISCompat.csproj", "{343FD820-217C-4FE3-9A81-3A03B5DB2CBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
