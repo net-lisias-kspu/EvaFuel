@@ -76,10 +76,11 @@ Please note the copyrights and trademarks in [NOTICE](./NOTICE).
 
 * [Vendan](https://forum.kerbalspaceprogram.com/index.php?/profile/48676-vendan/) ROOT
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/85149-*)
-	+ [github](https://github.com/andyleap/EvaFuel)
+	+ [Github](https://github.com/andyleap/EvaFuel)
 * [AliceTheGorgon](https://forum.kerbalspaceprogram.com/index.php?/profile/147133-alicethegorgon/) Previous Maintainer
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/138474-*/) **M.I.A**
-	+ [Github](https://github.com/ShinjiSakanami/EvaFuel)
+	+ Github **MIA**
+		- [Github](https://github.com/ShinjiSakanami/EvaFuel) Most related forked found.
 * [linuxgurugamer](https://forum.kerbalspaceprogram.com/index.php?/profile/129964-linuxgurugamer/) CURRENT
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/158156-*/) 
 	+ [SpaceDock](https://spacedock.info/mod/1274)
