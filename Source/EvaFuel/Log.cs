@@ -1,3 +1,20 @@
+﻿/*
+	This file is part of EvaFuel /L Unleashed
+		© 2022 LisiasT
+		© 2017-2020 linuxgurugamer
+		© 2016 AliceTheGorgon
+		© 2014 Vendan
+
+	THIS FILE is licensed to you under:
+		* WTFPL - http://www.wtfpl.net
+			* Everyone is permitted to copy and distribute verbatim or modified
+ 				copies of this license document, and changing it is allowed as long
+				as the name is changed.
+
+	THIS FILE is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
