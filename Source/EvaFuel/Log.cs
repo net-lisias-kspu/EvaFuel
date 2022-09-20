@@ -16,116 +16,87 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using KSPe.Util.Log;
 using System.Diagnostics;
+
+#if DEBUG
+using System.Collections.Generic;
+#endif
 
 namespace EvaFuel
 {
-    public static class Log
-    {
-        public enum LEVEL
-        {
-            OFF = 0,
-            ERROR = 1,
-            WARNING = 2,
-            INFO = 3,
-            DETAIL = 4,
-            TRACE = 5
-        };
-        static string PREFIX = "";
+	public static class Log
+	{
+		private static readonly Logger log = Logger.CreateForType<Startup>();
 
-        public static void setTitle(string t)
-        {
-            PREFIX = t + ": ";
-        }
+		public static KSPe.Util.Log.Level level => log.level;
 
-        public static LEVEL level = LEVEL.INFO;
+		public static void force (string msg, params object [] @params)
+		{
+			log.force (msg, @params);
+		}
 
+		public static void info(string msg, params object[] @params)
+		{
+			log.info(msg, @params);
+		}
 
+		public static void warn(string msg, params object[] @params)
+		{
+			log.warn(msg, @params);
+		}
 
-        public static LEVEL GetLevel()
-        {
-            return level;
-        }
+		public static void detail(string msg, params object[] @params)
+		{
+			log.detail(msg, @params);
+		}
 
-        public static void SetLevel(LEVEL level)
-        {
-            UnityEngine.Debug.Log("log level " + level);
-            Log.level = level;
-        }
+		public static void trace(string msg, params object[] @params)
+		{
+			log.trace(msg, @params);
+		}
 
-        public static LEVEL GetLogLevel()
-        {
-            return level;
-        }
+		public static void stackdump(string msg, params object[] @params)
+		{
+			Log.detail(msg, @params);
+			System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+			Log.trace("Called by {0}", t);
+		}
 
-        private static bool IsLevel(LEVEL level)
-        {
-            return level == Log.level;
-        }
+		public static void error(Exception e, object offended)
+		{
+			log.error(offended, e);
+		}
 
-        public static bool IsLogable(LEVEL level)
-        {
-            return level <= Log.level;
-        }
+		public static void error(string msg, params object[] @params)
+		{
+			log.error(msg, @params);
+		}
 
-        public static void Trace(String msg)
-        {
-            if (IsLogable(LEVEL.TRACE))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
+		public static void error(Exception e, string msg, params object[] @params)
+		{
+			log.error(e, msg, @params);
+		}
 
-        public static void Detail(String msg)
-        {
-            if (IsLogable(LEVEL.DETAIL))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
+		[ConditionalAttribute("DEBUG")]
+		public static void dbg(string msg, params object[] @params)
+		{
+			log.trace(msg, @params);
+		}
 
-        [ConditionalAttribute("DEBUG")]
-        public static void Info(String msg)
-        {
-            if (IsLogable(LEVEL.INFO))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
+		#if DEBUG
+		private static readonly HashSet<string> DBG_SET = new HashSet<string>();
+		#endif
 
-        [ConditionalAttribute("DEBUG")]
-        public static void Test(String msg)
-        {
-            if (IsLogable(LEVEL.INFO))
-            {
-                UnityEngine.Debug.LogWarning(PREFIX + "TEST:" + msg);
-            }
-        }
-
-
-        public static void Warning(String msg)
-        {
-            if (IsLogable(LEVEL.WARNING))
-            {
-                UnityEngine.Debug.LogWarning(PREFIX + msg);
-            }
-        }
-
-        public static void Error(String msg)
-        {
-            if (IsLogable(LEVEL.ERROR))
-            {
-                UnityEngine.Debug.LogError(PREFIX + msg);
-            }
-        }
-
-        public static void Exception(Exception e)
-        {
-            Log.Error("exception caught: " + e.GetType() + ": " + e.Message);
-        }
-
-    }
+		[ConditionalAttribute("DEBUG")]
+		public static void dbgOnce(string msg, params object[] @params)
+		{
+			string new_msg = string.Format(msg, @params);
+			#if DEBUG
+			if (DBG_SET.Contains(new_msg)) return;
+			DBG_SET.Add(new_msg);
+			#endif
+			log.trace(new_msg);
+		}
+	}
 }

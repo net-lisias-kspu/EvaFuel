@@ -8,8 +8,6 @@ namespace EvaFuel
 {
     public class ModuleKISItemEvaPropellantProxy : ModuleKISItemEvaPropellant
     {
-
-
 		public bool ModEnabled { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ModEnabled; } }
 		public bool KISIntegrationEnabled { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().KISIntegrationEnabled; } }
 		public bool ShowInfoMessage { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowInfoMessage; } }

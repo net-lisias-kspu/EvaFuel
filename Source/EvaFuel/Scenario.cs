@@ -25,15 +25,9 @@
 */
 using System;
 using UnityEngine;
-using KSP.IO;
-using KSP;
-using System.IO;
 
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 
 namespace EvaFuel
 {
@@ -48,7 +42,6 @@ namespace EvaFuel
         {
             try
             {
-              
                 ConfigNode configFileNode = new ConfigNode(TT_NODENAME);
                 ConfigNode configDataNode;
 
@@ -70,13 +63,13 @@ namespace EvaFuel
             }
             catch (Exception e)
             {
-                Debug.LogError("[KRnD] OnSave(): " + e.ToString());
+                Log.error(e, "Scenario.OnSave()");
             }
         }
 
         public override void OnLoad(ConfigNode configFile)
         {
-            Log.Info("OnLoad");
+            Log.dbg("OnLoad");
             ConfigNode configFileNode = new ConfigNode();
             try
             {
@@ -107,7 +100,7 @@ namespace EvaFuel
             }
             catch (Exception e)
             {
-                Debug.LogError("[EvaFuel] OnLoad(): " + e.ToString());
+                Log.error(e, "Scenario.OnLoad()");
             }
         }
     }

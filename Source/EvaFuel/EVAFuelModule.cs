@@ -46,7 +46,7 @@ namespace EvaFuel
 
         public override void OnStart(PartModule.StartState state)
         {
-            Log.Info("ModuleEVAFuel.OnStart");
+            Log.dbg("ModuleEVAFuel.OnStart");
             try
             {
                 if (initialized && HighLogic.LoadedSceneIsEditor)
@@ -69,14 +69,14 @@ namespace EvaFuel
             }
             catch (Exception e)
             {
-                Log.Error("OnStart Error: " + e.Message);
+                Log.error(e, "OnStart Error");
                 throw;
             }
         }
 
         private void AssignResourcesToPart()
         {
-            Log.Info("ModuleEVAFuel.AssignResourceToPart");
+            Log.dbg("ModuleEVAFuel.AssignResourceToPart");
             try
             {
 
@@ -110,7 +110,7 @@ namespace EvaFuel
             }
             catch (Exception e)
             {
-                Log.Error("AssignResourcesToPart Error " + e.Message);
+                Log.error(e, "AssignResourcesToPart Error");
                 throw;
             }
         }
