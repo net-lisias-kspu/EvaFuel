@@ -80,7 +80,7 @@ namespace EvaFuel
             try
             {
 
-                evaFuelResource = HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName;
+                evaFuelResource = EVAFuelSettings.Instance.ShipPropellantName;
 
                 if (!part.Resources.Contains(evaFuelResource))
                 {
@@ -94,8 +94,8 @@ namespace EvaFuel
                         this.specificHeatCapacity = resourceDefinition.specificHeatCapacity;
                     }
 
-                    var maxAmount = HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().resourcesAmtToAdd;
-                    if (HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().resourcePerCrew)
+                    double maxAmount = EVAFuelSettings.Instance.resourcesAmtToAdd;
+                    if (EVAFuelSettings.Instance.resourcePerCrew)
                         maxAmount *= this.part.CrewCapacity;
 
                     resourceNode.AddValue("name", evaFuelResource);

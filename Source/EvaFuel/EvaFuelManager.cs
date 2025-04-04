@@ -93,18 +93,10 @@ namespace EvaFuel
         }
 
 
-        public bool ModEnabled { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ModEnabled; } }
-        public bool ShowInfoMessage { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowInfoMessage; } }
-        public bool ShowLowFuelWarning { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().ShowLowFuelWarning; } }
-        public bool DisableLowFuelWarningLandSplash { get { return HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().DisableLowFuelWarningLandSplash; } }
-
-        public string resourceName { get { return HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaPropellantName; } }
-        public string shipPropName { get { return HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName; } }
-
         public void onEvaStart(GameEvents.FromToAction<Part, Part> data)
         {
-            if (ModEnabled)
             Log.dbg("onEvaStart, ModEnabled: {0}", EvaFuelDifficultySettings.Instance.ModEnabled);
+            if (EvaFuelDifficultySettings.Instance.ModEnabled)
             {
                 double fuelInEVAPack = 0;
                 double takenFuel = 0;
@@ -117,7 +109,7 @@ namespace EvaFuel
                 }
 
 
-                double evaTankFuelMax = HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings> ().EvaTankFuelMax;
+                double evaTankFuelMax = EVAFuelSettings.Instance.EvaTankFuelMax;
                 // Check available volume for EVA fuel - it might be reduced by some external factors
                 // Default value for EVA fuel is 5 units however EVAFuel may be configured for greater amount
                 // Treat propellantResourceDefaultAmount as multiplier where 5 units correspond to 100%
@@ -128,12 +120,11 @@ namespace EvaFuel
                     evaTankFuelMax *= defaultEVAFuel / 5;
                 }
 
-                takenFuel = data.from.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, 
+                takenFuel = data.from.RequestResource(EVAFuelSettings.Instance.ShipPropellantName, 
 					(evaTankFuelMax - fuelInEVAPack) / 
-					HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
-                fuelRequest = takenFuel * HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor;
-                
-                
+					EVAFuelSettings.Instance.FuelConversionFactor);
+                fuelRequest = takenFuel * EVAFuelSettings.Instance.FuelConversionFactor;
+
                 Log.detail("fuelInEVAPack: {0}   takenFuel: {1}    fuelRequest: {2}", fuelInEVAPack, takenFuel, fuelRequest);
 
                 bool rescueShip = false;
@@ -164,26 +155,26 @@ namespace EvaFuel
                 //Floats and doubles don't like exact numbers. :/ Need to test for similarity rather than equality.
 				if (fuelRequest + fuelInEVAPack + 0.001 > evaTankFuelMax)
                 {
-					data.to.RequestResource(resourceName, evaTankFuelMax - (fuelRequest + fuelInEVAPack));
-                    if (ShowInfoMessage)
+					data.to.RequestResource(EVAFuelSettings.Instance.EvaPropellantName, evaTankFuelMax - (fuelRequest + fuelInEVAPack));
+                    if (EvaFuelDifficultySettings.Instance.ShowInfoMessage)
                     {
-                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + resourceName + ".", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
+                        ScreenMessages.PostScreenMessage("Filled EVA tank with " + Math.Round(takenFuel, 2).ToString() + " units of " + EVAFuelSettings.Instance.EvaPropellantName + ".", EVAFuelSettings.Instance.ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                     }
                 }
                 else if (rescueShip == true && (fuelRequest + fuelInEVAPack) == 0)
                 {
-					data.to.RequestResource(resourceName, evaTankFuelMax - 1);//give one unit of eva propellant
-                    if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
+					data.to.RequestResource(EVAFuelSettings.Instance.EvaPropellantName, evaTankFuelMax - 1);//give one unit of eva propellant
+                    if (EvaFuelDifficultySettings.Instance.ShowLowFuelWarning && (!EvaFuelDifficultySettings.Instance.DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "evafuel1", "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + resourceName + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "evafuel1", "Rescue fuel!", "Warning! There was no fuel aboard ship, so only one single unit of " + EVAFuelSettings.Instance.EvaPropellantName + " was able to be scrounged up for the journey!", "OK", false, HighLogic.UISkin);
                     }
                 }
                 else
                 {
-					data.to.RequestResource(resourceName, evaTankFuelMax - (fuelRequest + fuelInEVAPack));
-                    if (ShowLowFuelWarning && (!DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
+					data.to.RequestResource(EVAFuelSettings.Instance.EvaPropellantName, evaTankFuelMax - (fuelRequest + fuelInEVAPack));
+                    if (EvaFuelDifficultySettings.Instance.ShowLowFuelWarning && (!EvaFuelDifficultySettings.Instance.DisableLowFuelWarningLandSplash || !data.from.vessel.LandedOrSplashed))
                     {
-                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "evafuel2", "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + resourceName + "!", "OK", false, HighLogic.UISkin);
+                        PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "evafuel2", "Low EVA Fuel!", "Warning! Only " + Math.Round(takenFuel, 2).ToString() + " units of " + EVAFuelSettings.Instance.ShipPropellantName + " were available for EVA! Meaning you only have " + Math.Round(fuelRequest, 2).ToString() + " units of " + EVAFuelSettings.Instance.EvaPropellantName + "!", "OK", false, HighLogic.UISkin);
                     }
                 }
             }
@@ -196,19 +187,19 @@ namespace EvaFuel
 
         public void onEvaEnd(GameEvents.FromToAction<Part, Part> data)
         {
-            if (ModEnabled)
             Log.dbg("onEvaEnd");
+            if (EvaFuelDifficultySettings.Instance.ModEnabled)
             {
                 
-                double fuelLeft = data.from.RequestResource(resourceName, HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().EvaTankFuelMax);
+                double fuelLeft = data.from.RequestResource(EVAFuelSettings.Instance.EvaPropellantName, EVAFuelSettings.Instance.EvaTankFuelMax);
 
-                double fuelStored = data.to.RequestResource(HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName, -fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor);
-                if (ShowInfoMessage)
+                double fuelStored = data.to.RequestResource(EVAFuelSettings.Instance.ShipPropellantName, -fuelLeft / EVAFuelSettings.Instance.FuelConversionFactor);
+                if (EvaFuelDifficultySettings.Instance.ShowInfoMessage)
                 {
-                    ScreenMessages.PostScreenMessage("Returned " + Math.Round(fuelLeft / HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().FuelConversionFactor, 2).ToString() + " units of " + HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ShipPropellantName + " to ship.", HighLogic.CurrentGame.Parameters.CustomParams<EVAFuelSettings>().ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
+                    ScreenMessages.PostScreenMessage("Returned " + Math.Round(fuelLeft / EVAFuelSettings.Instance.FuelConversionFactor, 2).ToString() + " units of " + EVAFuelSettings.Instance.ShipPropellantName + " to ship.", EVAFuelSettings.Instance.ScreenMessageLife, ScreenMessageStyle.UPPER_CENTER);
                 }
-                data.from.RequestResource(resourceName,  fuelStored + fuelLeft);
                 Log.detail("fuelLeft: {0}    fuelStored: {1}", fuelLeft, fuelStored);
+                data.from.RequestResource(EVAFuelSettings.Instance.EvaPropellantName,  fuelStored + fuelLeft);
                 
                 onBoardHandler(data, fuelLeft + fuelStored);
             }
@@ -281,12 +272,12 @@ namespace EvaFuel
                 {
                     double giveBack = kerbalResource.maxAmount - ked.evaPropAmt;                    
 
-                    double sentBackAmount = data.from.RequestResource(this.resourceName, -1 * giveBack);
+                    double sentBackAmount = data.from.RequestResource(this.EVAFuelSettings.Instance.EvaPropellantName, -1 * giveBack);
                     kerbalResource.amount = ked.evaPropAmt;
 
                     Log.Info(string.Format("Returned {0} {1} to {2}",
                         sentBackAmount,
-                        this.resourceName,
+                        this.EVAFuelSettings.Instance.EvaPropellantName,
                         data.from.partInfo.title));
                 }
 #endif
@@ -318,7 +309,7 @@ namespace EvaFuel
             KerbalEVA kEVA = data.from.FindModuleImplementing<KerbalEVA>();
             // EVAFuelSettings.Instance.EvaPropellantName = kEVA.propellantEVAFuelSettings.Instance.EvaPropellantName;
 
-            var fromResource = data.from.Resources.Where(p => p.info.name == resourceName).First();
+            PartResource fromResource = data.from.Resources.Where(p => p.info.name == EVAFuelSettings.Instance.EvaPropellantName).First();
             if (fromResource == null)
             {
                 Log.warn("Resource not found: {0} in part: {1}", EVAFuelSettings.Instance.EvaPropellantName, data.from.partInfo.title);          
@@ -345,15 +336,15 @@ namespace EvaFuel
             Log.detail("Storing EVA fuel: {0}", ked.evaPropAmt);
             //FileOperations.Instance.saveKerbalEvaData(kerbalEVAlist);
 #if false
-            if (HighLogic.CurrentGame.Parameters.CustomParams<EvaFuelDifficultySettings>().fillFromPod)
+            if (EvaFuelDifficultySettings.Instance.fillFromPod)
             {
-                double sentAmount = data.to.RequestResource(this.resourceName, -fromResource.amount);
+                double sentAmount = data.to.RequestResource(this.EVAFuelSettings.Instance.EvaPropellantName, -fromResource.amount);
 
                 fromResource.amount += sentAmount;
 
                 Log.Info(string.Format("Returned {0} {1} to {2}",
                     -sentAmount,
-                    this.resourceName,
+                    EVAFuelSettings.Instance.EvaPropellantName,
                     data.to.partInfo.title));
             }
 #endif
